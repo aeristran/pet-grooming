@@ -68,11 +68,23 @@ mysqli_close($link);
 <div class="w3-container w3-white w3-margin w3-padding w3-round-large">
     <h1>Customer Dashboard</h1>
     <p>Welcome, <?php echo htmlspecialchars($_SESSION["username"]); ?></p>
+<div class="w3-margin-top">
+    <a class="w3-button w3-green w3-margin-right w3-round-large" href="addPet.php">
+        Add Pet
+    </a>
 
-    <a class="w3-button w3-green w3-margin-right" href="addPet.php">Add Pet</a>
-    <a class="w3-button w3-blue w3-margin-right" href="book_appointment.php">Book Appointment</a>
-    <a class="w3-button w3-red" href="logout.php">Logout</a>
+    <a class="w3-button w3-blue w3-margin-right w3-round-large" href="book_appointment.php">
+        Book Appointment
+    </a>
 
+    <a class="w3-button w3-teal w3-margin-right w3-round-large" href="my_appointments.php">
+        My Appointments
+    </a>
+
+    <a class="w3-button w3-red w3-round-large" href="logout.php">
+        Logout
+    </a>
+</div>
     <hr>
 
     <h3>Your Pets</h3>
