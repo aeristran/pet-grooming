@@ -92,6 +92,14 @@ mysqli_close($link);
                         <h4><?php echo htmlspecialchars($pet["pet_name"]); ?></h4>
                         <p><?php echo htmlspecialchars($pet["species"]); ?></p>
                         <p><?php echo htmlspecialchars($pet["breed"]); ?></p>
+
+                        <a 
+    href="delete_pet.php?id=<?php echo $pet['pet_id']; ?>" 
+    class="w3-button w3-red w3-small"
+    onclick="return confirm('Are you sure you want to delete this pet?');"
+>
+    Delete Pet
+</a>
                     </div>
                 </div>
             <?php } ?>
