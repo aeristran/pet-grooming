@@ -51,6 +51,7 @@ SELECT
     a.status,
     a.notes,
     p.pet_name,
+    p.pet_image,
     u.first_name,
     u.last_name
 FROM appointments a
@@ -94,41 +95,48 @@ mysqli_close($link);
     <?php if (empty($appointments)) { ?>
         <p>No appointments assigned yet.</p>
     <?php } else { ?>
-        <table class="w3-table w3-bordered w3-striped">
-            <tr class="w3-teal">
-                <th>Customer</th>
-                <th>Pet</th>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
+       <table class="w3-table w3-bordered w3-striped">
+    <tr class="w3-teal">
+        <th>Pet Image</th>
+        <th>Customer</th>
+        <th>Pet</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Status</th>
+        <th>Actions</th>
+    </tr>
 
-            <?php foreach ($appointments as $appt) { ?>
-                <tr>
-                    <td><?php echo htmlspecialchars($appt['first_name'] . " " . $appt['last_name']); ?></td>
-                    <td><?php echo htmlspecialchars($appt['pet_name']); ?></td>
-                    <td><?php echo htmlspecialchars($appt['appointment_date']); ?></td>
-                    <td><?php echo htmlspecialchars($appt['start_time'] . " - " . $appt['end_time']); ?></td>
-                    <td><?php echo htmlspecialchars($appt['status']); ?></td>
-                    <td>
-                        <?php if ($appt['status'] == "SCHEDULED") { ?>
-                            <a class="w3-button w3-green w3-small"
-                               href="?action=accept&id=<?php echo $appt['appointment_id']; ?>">Accept</a>
+    <?php foreach ($appointments as $appt) { ?>
+        <tr>
+            <td>
+                <?php if (!empty($appt['pet_image'])) { ?>
+                    <img src="<?php echo htmlspecialchars($appt['pet_image']); ?>" alt="Pet" style="width:70px; height:70px; object-fit:cover; border-radius:10px;">
+                <?php } else { ?>
+                    No Image
+                <?php } ?>
+            </td>
+            <td><?php echo htmlspecialchars($appt['first_name'] . " " . $appt['last_name']); ?></td>
+            <td><?php echo htmlspecialchars($appt['pet_name']); ?></td>
+            <td><?php echo htmlspecialchars($appt['appointment_date']); ?></td>
+            <td><?php echo htmlspecialchars($appt['start_time'] . " - " . $appt['end_time']); ?></td>
+            <td><?php echo htmlspecialchars($appt['status']); ?></td>
+            <td>
+                <?php if ($appt['status'] == "SCHEDULED") { ?>
+                    <a class="w3-button w3-green w3-small"
+                       href="?action=accept&id=<?php echo $appt['appointment_id']; ?>">Accept</a>
 
-                            <a class="w3-button w3-red w3-small"
-                               href="?action=decline&id=<?php echo $appt['appointment_id']; ?>">Decline</a>
-                        <?php } ?>
+                    <a class="w3-button w3-red w3-small"
+                       href="?action=decline&id=<?php echo $appt['appointment_id']; ?>">Decline</a>
+                <?php } ?>
 
-                        <?php if ($appt['status'] == "CONFIRMED") { ?>
-                            <a class="w3-button w3-blue w3-small"
-                               href="?action=complete&id=<?php echo $appt['appointment_id']; ?>">Complete</a>
-                        <?php } ?>
-                    </td>
-                </tr>
-            <?php } ?>
-
-        </table>
+                <?php if ($appt['status'] == "CONFIRMED") { ?>
+                    <a class="w3-button w3-blue w3-small"
+                       href="?action=complete&id=<?php echo $appt['appointment_id']; ?>">Complete</a>
+                <?php } ?>
+            </td>
+        </tr>
+    <?php } ?>
+</table>
     <?php } ?>
 
     <br>
