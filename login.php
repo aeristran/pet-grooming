@@ -80,141 +80,183 @@ $last_username = isset($_COOKIE["last_username"]) ? $_COOKIE["last_username"] : 
     <title>Pet Grooming Login</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #dff6f0, #fef6e4);
-            min-height: 100vh;
-            overflow: hidden;
-        }
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #dff6f0, #fef6e4);
+        min-height: 100vh;
+        overflow: hidden;
+    }
 
-        .page {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            position: relative;
-        }
+    .page {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        position: relative;
+    }
 
-        .login-card {
-            width: 380px;
-            background: rgba(255,255,255,0.95);
-            padding: 30px;
-            border-radius: 22px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            z-index: 2;
-            animation: fadeInUp 1s ease;
-        }
+    .login-card {
+        width: 380px;
+        background: rgba(255,255,255,0.95);
+        padding: 30px;
+        border-radius: 22px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        z-index: 2;
+        animation: fadeInUp 1s ease;
+        position: relative;
+    }
 
-        .login-card h2 {
-            text-align: center;
-            color: #2d6a4f;
-            margin-bottom: 10px;
-        }
+    .login-card h2 {
+        text-align: center;
+        color: #2d6a4f;
+        margin-bottom: 10px;
+    }
 
-        .login-card p {
-            text-align: center;
-            color: #555;
-            margin-bottom: 20px;
-        }
+    .login-card p {
+        text-align: center;
+        color: #555;
+        margin-bottom: 20px;
+    }
 
-        .login-card label {
-            font-weight: bold;
-            color: #333;
-        }
+    .login-card label {
+        font-weight: bold;
+        color: #333;
+    }
 
-        .login-card input[type="text"],
-        .login-card input[type="password"] {
-            margin-bottom: 8px;
-            border-radius: 10px;
-            border: 1px solid #ccc;
-            padding: 10px;
-        }
+    .login-card input[type="text"],
+    .login-card input[type="password"] {
+        margin-bottom: 8px;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        padding: 10px;
+    }
 
-        .login-btn {
-            width: 100%;
-            border: none;
-            border-radius: 12px;
-            background: #2d6a4f;
-            color: white;
-            padding: 12px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
+    .login-btn {
+        width: 100%;
+        border: none;
+        border-radius: 12px;
+        background: #2d6a4f;
+        color: white;
+        padding: 12px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
 
-        .login-btn:hover {
-            background: #1b4332;
-            transform: scale(1.02);
-        }
+    .login-btn:hover {
+        background: #1b4332;
+        transform: scale(1.02);
+    }
 
-        .pet-side {
-            position: absolute;
-            width: 140px;
-            animation: floatPet 3s ease-in-out infinite;
-            z-index: 1;
-        }
+    .pet-side {
+        position: absolute;
+        width: 140px;
+        animation: floatPet 3s ease-in-out infinite;
+        z-index: 1;
+    }
 
-        .pet-left {
-            left: 8%;
-            bottom: 12%;
-        }
+    .pet-left {
+        left: 8%;
+        bottom: 12%;
+    }
 
-        .pet-right {
-            right: 8%;
-            top: 12%;
-            animation-delay: 1s;
-        }
+    .pet-right {
+        right: 8%;
+        top: 12%;
+        animation-delay: 1s;
+    }
 
-        .paw {
-            position: absolute;
-            font-size: 28px;
-            opacity: 0.15;
-            animation: drift 10s linear infinite;
-        }
+    .paw {
+        position: absolute;
+        font-size: 28px;
+        opacity: 0.15;
+        animation: drift 10s linear infinite;
+    }
 
-        .paw1 { top: 10%; left: 15%; }
-        .paw2 { top: 25%; right: 18%; animation-delay: 2s; }
-        .paw3 { bottom: 20%; left: 20%; animation-delay: 4s; }
-        .paw4 { bottom: 12%; right: 25%; animation-delay: 6s; }
+    .paw1 { top: 10%; left: 15%; }
+    .paw2 { top: 25%; right: 18%; animation-delay: 2s; }
+    .paw3 { bottom: 20%; left: 20%; animation-delay: 4s; }
+    .paw4 { bottom: 12%; right: 25%; animation-delay: 6s; }
 
-        .link-text {
-            text-align: center;
-            margin-top: 15px;
-        }
+    .link-text {
+        text-align: center;
+        margin-top: 15px;
+    }
 
-        .link-text a {
-            color: #2d6a4f;
-            font-weight: bold;
-            text-decoration: none;
-        }
+    .link-text a {
+        color: #2d6a4f;
+        font-weight: bold;
+        text-decoration: none;
+    }
 
-        .link-text a:hover {
-            text-decoration: underline;
-        }
+    .link-text a:hover {
+        text-decoration: underline;
+    }
 
-        @keyframes floatPet {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-12px); }
-        }
+    /* paw prints inside card, top-right */
+    .paw-trail {
+        position: absolute;
+        top: 12px;
+        right: 18px;
+        width: 110px;
+        height: 45px;
+        pointer-events: none;
+    }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(25px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+    .paw-step {
+        position: absolute;
+        font-size: 18px;
+        opacity: 0;
+        animation: pawWalk 3s infinite;
+    }
 
-        @keyframes drift {
-            0% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(8deg); }
-            100% { transform: translateY(0px) rotate(0deg); }
+    .paw-step:nth-child(1) { right: 0; top: 0; animation-delay: 0s; }
+    .paw-step:nth-child(2) { right: 22px; top: 12px; animation-delay: 0.4s; }
+    .paw-step:nth-child(3) { right: 44px; top: 0; animation-delay: 0.8s; }
+    .paw-step:nth-child(4) { right: 66px; top: 12px; animation-delay: 1.2s; }
+    .paw-step:nth-child(5) { right: 88px; top: 0; animation-delay: 1.6s; }
+
+    @keyframes floatPet {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-12px); }
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(25px);
         }
-    </style>
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes drift {
+        0% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-20px) rotate(8deg); }
+        100% { transform: translateY(0px) rotate(0deg); }
+    }
+
+    @keyframes pawWalk {
+        0% {
+            opacity: 0;
+            transform: scale(0.8);
+        }
+        20% {
+            opacity: 0.9;
+            transform: scale(1);
+        }
+        50% {
+            opacity: 0.6;
+        }
+        100% {
+            opacity: 0;
+            transform: scale(1.05);
+        }
+    }
+</style>
 </head>
 <body>
 
@@ -228,6 +270,14 @@ $last_username = isset($_COOKIE["last_username"]) ? $_COOKIE["last_username"] : 
     <img src="cat.png" alt="Cat" class="pet-side pet-right">
 
     <div class="login-card">
+
+    <div class="paw-trail">
+        <div class="paw-step">🐾</div>
+        <div class="paw-step">🐾</div>
+        <div class="paw-step">🐾</div>
+        <div class="paw-step">🐾</div>
+        <div class="paw-step">🐾</div>
+    </div>
         <h2>Pet Grooming Login</h2>
         <p>Welcome back! Sign in to manage your pets and appointments.</p>
 
