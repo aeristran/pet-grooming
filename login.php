@@ -260,9 +260,3 @@ $last_username = isset($_COOKIE["last_username"]) ? $_COOKIE["last_username"] : 
 </body>
 </html>
 
-For this to work nicely, put 2 cute PNG images in your project:
-
-images/dog.png
-images/cat.png
-
-If you don’t have them yet, you can temporarily remove these two lines:
