@@ -2,14 +2,8 @@
 session_start();
 require_once "config.php";
 
-if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || $_SESSION['role'] !== 'ADMIN') {
-    header("location: login.php");
-    exit;
-}
-
-$first_name = $last_name = $email = $username = $password = $confirm_password = $specialty = $bio = $hire_date = "";
-$first_name_err = $last_name_err = $email_err = $username_err = $password_err = $confirm_password_err = "";
-$success_msg = "";
+$username = $password = $confirm_password = $email = $first_name = $last_name = "";
+$username_err = $password_err = $confirm_password_err = $email_err = $first_name_err = $last_name_err = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -46,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if (empty(trim($_POST["username"]))) {
-        $username_err = "Please enter username.";
+        $username_err = "Please enter a username.";
     } else {
         $sql = "SELECT user_id FROM users WHERE username = ?";
         if ($stmt = mysqli_prepare($link, $sql)) {
@@ -77,85 +71,54 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $confirm_password_err = "Please confirm password.";
     } else {
         $confirm_password = trim($_POST["confirm_password"]);
-        if (empty($password_err) && $password != $confirm_password) {
+        if (empty($password_err) && ($password != $confirm_password)) {
             $confirm_password_err = "Passwords do not match.";
         }
     }
 
-    $specialty = trim($_POST["specialty"]);
-    $bio = trim($_POST["bio"]);
-    $hire_date = trim($_POST["hire_date"]);
-
     if (
-        empty($first_name_err) &&
-        empty($last_name_err) &&
-        empty($email_err) &&
-        empty($username_err) &&
-        empty($password_err) &&
-        empty($confirm_password_err)
+        empty($username_err) && empty($password_err) && empty($confirm_password_err) &&
+        empty($email_err) && empty($first_name_err) && empty($last_name_err)
     ) {
-        mysqli_begin_transaction($link);
+        $sql = "INSERT INTO users (role, first_name, last_name, email, username, password_hash)
+                VALUES (?, ?, ?, ?, ?, ?)";
 
-        try {
-            $sql_user = "INSERT INTO users (role, first_name, last_name, email, username, password_hash)
-                         VALUES (?, ?, ?, ?, ?, ?)";
+        if ($stmt = mysqli_prepare($link, $sql)) {
+            $role = "CUSTOMER";
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-            if ($stmt = mysqli_prepare($link, $sql_user)) {
-                $role = "EMPLOYEE";
-                $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+            mysqli_stmt_bind_param(
+                $stmt,
+                "ssssss",
+                $role,
+                $first_name,
+                $last_name,
+                $email,
+                $username,
+                $hashed_password
+            );
 
-                mysqli_stmt_bind_param(
-                    $stmt,
-                    "ssssss",
-                    $role,
-                    $first_name,
-                    $last_name,
-                    $email,
-                    $username,
-                    $hashed_password
-                );
-
-                if (!mysqli_stmt_execute($stmt)) {
-                    throw new Exception("Could not create employee user.");
-                }
-
+            if (mysqli_stmt_execute($stmt)) {
                 $new_user_id = mysqli_insert_id($link);
-                mysqli_stmt_close($stmt);
-            } else {
-                throw new Exception("Could not prepare user insert.");
-            }
 
-            $sql_profile = "INSERT INTO employee_profiles (employee_id, specialty, bio, hire_date, is_active)
-                            VALUES (?, ?, ?, ?, 1)";
-
-            if ($stmt2 = mysqli_prepare($link, $sql_profile)) {
-                mysqli_stmt_bind_param(
-                    $stmt2,
-                    "isss",
-                    $new_user_id,
-                    $specialty,
-                    $bio,
-                    $hire_date
-                );
-
-                if (!mysqli_stmt_execute($stmt2)) {
-                    throw new Exception("Could not create employee profile.");
+                $sql_profile = "INSERT INTO customer_profiles (customer_id) VALUES (?)";
+                if ($stmt2 = mysqli_prepare($link, $sql_profile)) {
+                    mysqli_stmt_bind_param($stmt2, "i", $new_user_id);
+                    mysqli_stmt_execute($stmt2);
+                    mysqli_stmt_close($stmt2);
                 }
 
-                mysqli_stmt_close($stmt2);
+                header("location: login.php");
+                exit;
             } else {
-                throw new Exception("Could not prepare employee profile insert.");
+                echo "Something went wrong. Please try again later.";
             }
 
-            mysqli_commit($link);
-            $success_msg = "Employee account created successfully!";
-
-            $first_name = $last_name = $email = $username = $password = $confirm_password = $specialty = $bio = $hire_date = "";
-        } catch (Exception $e) {
-            mysqli_rollback($link);
-            $success_msg = "Error: " . $e->getMessage();
+            mysqli_stmt_close($stmt);
         }
     }
+
+    mysqli_close($link);
 }
 ?>
 
@@ -164,24 +127,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Employee</title>
+    <title>Sign Up</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <style>
         body { font: 14px sans-serif; }
-        .wrapper { width: 450px; padding: 20px; margin: 40px auto; }
+        .wrapper { width: 400px; padding: 20px; margin: 40px auto; }
     </style>
 </head>
 <body class="w3-light-grey">
 
 <div class="wrapper w3-white w3-border w3-round-large">
-    <h2>Create Employee</h2>
-    <p>Admin can create a new groomer account here.</p>
-
-    <?php if (!empty($success_msg)) { ?>
-        <div class="w3-panel <?php echo (strpos($success_msg, 'Error:') === 0) ? 'w3-red' : 'w3-green'; ?>">
-            <?php echo htmlspecialchars($success_msg); ?>
-        </div>
-    <?php } ?>
+    <h2>Customer Sign Up</h2>
+    <p>Please fill out this form to create your account.</p>
 
     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
         <div class="w3-container">
@@ -220,25 +177,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <span class="w3-text-red"><?php echo $confirm_password_err; ?></span>
         </div>
 
-        <div class="w3-container">
-            <label>Specialty</label>
-            <input type="text" name="specialty" class="w3-input" value="<?php echo htmlspecialchars($specialty); ?>">
-        </div>
-
-        <div class="w3-container">
-            <label>Bio</label>
-            <textarea name="bio" class="w3-input"><?php echo htmlspecialchars($bio); ?></textarea>
-        </div>
-
-        <div class="w3-container">
-            <label>Hire Date</label>
-            <input type="date" name="hire_date" class="w3-input" value="<?php echo htmlspecialchars($hire_date); ?>">
-        </div>
-
         <div class="w3-container w3-margin-top">
-            <input type="submit" class="w3-button w3-green" value="Create Employee">
-            <a href="admin_dashboard.php" class="w3-button w3-gray">Back</a>
+            <input type="submit" class="w3-button w3-green" value="Submit">
+            <input type="reset" class="w3-button w3-gray" value="Reset">
         </div>
+
+        <p class="w3-container w3-margin-top">Already have an account? <a href="login.php">Login here</a>.</p>
     </form>
 </div>
 
