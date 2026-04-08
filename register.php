@@ -2,7 +2,7 @@
 session_start();
 require_once "config.php";
 
-$username = $password = $confirm_password = $email = $first_name = $last_name = "";
+$username = $password = $confirm_password = $email = $first_name = $last_name = $phone = "";
 $address_line1 = $address_line2 = $city = $state = $zip_code = "";
 $emergency_contact_name = $emergency_contact_phone = "";
 
@@ -27,6 +27,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $email_err = "Please enter email.";
     } else {
         $email = strtolower(trim($_POST["email"]));
+
+        $phone = trim($_POST["phone"]);
+
+
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $email_err = "Invalid email format.";
@@ -123,24 +127,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         mysqli_begin_transaction($link);
 
         try {
-            $sql = "INSERT INTO users (role, first_name, last_name, email, username, password_hash)
-                    VALUES (?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO users (role, first_name, last_name, email, phone, username, password_hash)
+        VALUES (?, ?, ?, ?, ?, ?, ?)";
 
             if ($stmt = mysqli_prepare($link, $sql)) {
                 $role = "CUSTOMER";
                 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-                mysqli_stmt_bind_param(
-                    $stmt,
-                    "ssssss",
-                    $role,
-                    $first_name,
-                    $last_name,
-                    $email,
-                    $username,
-                    $hashed_password
-                );
-
+              mysqli_stmt_bind_param(
+    $stmt,
+    "sssssss",
+    $role,
+    $first_name,
+    $last_name,
+    $email,
+    $phone,
+    $username,
+    $hashed_password
+);
                 if (!mysqli_stmt_execute($stmt)) {
                     throw new Exception("Could not create user.");
                 }
@@ -227,6 +231,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="email" class="w3-input" name="email" value="<?php echo htmlspecialchars($email); ?>">
             <span class="w3-text-red"><?php echo $email_err; ?></span>
         </div>
+
+        <div class="w3-container">
+    <label>Phone (optional)</label>
+    <input type="text" class="w3-input" name="phone" value="<?php echo htmlspecialchars($phone); ?>">
+</div>
 
         <div class="w3-container">
             <label>Username</label>
