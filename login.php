@@ -77,46 +77,192 @@ $last_username = isset($_COOKIE["last_username"]) ? $_COOKIE["last_username"] : 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Pet Grooming Login</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <style>
-        body { font: 14px sans-serif; }
-        .wrapper { width: 350px; padding: 20px; margin: 40px auto; }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #dff6f0, #fef6e4);
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .page {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .login-card {
+            width: 380px;
+            background: rgba(255,255,255,0.95);
+            padding: 30px;
+            border-radius: 22px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            z-index: 2;
+            animation: fadeInUp 1s ease;
+        }
+
+        .login-card h2 {
+            text-align: center;
+            color: #2d6a4f;
+            margin-bottom: 10px;
+        }
+
+        .login-card p {
+            text-align: center;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .login-card label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .login-card input[type="text"],
+        .login-card input[type="password"] {
+            margin-bottom: 8px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+
+        .login-btn {
+            width: 100%;
+            border: none;
+            border-radius: 12px;
+            background: #2d6a4f;
+            color: white;
+            padding: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .login-btn:hover {
+            background: #1b4332;
+            transform: scale(1.02);
+        }
+
+        .pet-side {
+            position: absolute;
+            width: 140px;
+            animation: floatPet 3s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        .pet-left {
+            left: 8%;
+            bottom: 12%;
+        }
+
+        .pet-right {
+            right: 8%;
+            top: 12%;
+            animation-delay: 1s;
+        }
+
+        .paw {
+            position: absolute;
+            font-size: 28px;
+            opacity: 0.15;
+            animation: drift 10s linear infinite;
+        }
+
+        .paw1 { top: 10%; left: 15%; }
+        .paw2 { top: 25%; right: 18%; animation-delay: 2s; }
+        .paw3 { bottom: 20%; left: 20%; animation-delay: 4s; }
+        .paw4 { bottom: 12%; right: 25%; animation-delay: 6s; }
+
+        .link-text {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .link-text a {
+            color: #2d6a4f;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .link-text a:hover {
+            text-decoration: underline;
+        }
+
+        @keyframes floatPet {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes drift {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(8deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
     </style>
 </head>
-<body class="w3-light-grey">
+<body>
 
-<div class="wrapper w3-white w3-border w3-round-large">
-    <h2>Login</h2>
-    <p>Please fill in your credentials to login.</p>
+<div class="page">
+    <div class="paw paw1">🐾</div>
+    <div class="paw paw2">🐾</div>
+    <div class="paw paw3">🐾</div>
+    <div class="paw paw4">🐾</div>
 
-    <?php
-    if (!empty($login_err)) {
-        echo '<div class="w3-panel w3-red w3-padding">' . htmlspecialchars($login_err) . '</div>';
-    }
-    ?>
+    <img src="images/dog.png" alt="Dog" class="pet-side pet-left">
+    <img src="images/cat.png" alt="Cat" class="pet-side pet-right">
 
-    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-        <div class="w3-container">
+    <div class="login-card">
+        <h2>Pet Grooming Login</h2>
+        <p>Welcome back! Sign in to manage your pets and appointments.</p>
+
+        <?php
+        if (!empty($login_err)) {
+            echo '<div class="w3-panel w3-red w3-round-large">' . htmlspecialchars($login_err) . '</div>';
+        }
+        ?>
+
+        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
             <label>Username</label>
-            <input type="text" name="username" class="w3-input"
-                   value="<?php echo htmlspecialchars($last_username); ?>">
+            <input type="text" name="username" class="w3-input" value="<?php echo htmlspecialchars($last_username); ?>">
             <span class="w3-text-red"><?php echo $username_err; ?></span>
-        </div>
 
-        <div class="w3-container">
             <label>Password</label>
             <input type="password" name="password" class="w3-input">
             <span class="w3-text-red"><?php echo $password_err; ?></span>
-        </div>
 
-        <div class="w3-container w3-margin-top">
-            <input type="submit" class="w3-button w3-green" value="Login">
-        </div>
+            <div style="margin-top: 15px;">
+                <input type="submit" class="login-btn" value="Login">
+            </div>
 
-        <p class="w3-container w3-margin-top">Don't have an account? <a href="register.php">Sign up now</a>.</p>
-    </form>
+            <div class="link-text">
+                Don't have an account? <a href="register.php">Sign up now</a>
+            </div>
+        </form>
+    </div>
 </div>
 
 </body>
 </html>
+
+For this to work nicely, put 2 cute PNG images in your project:
+
+images/dog.png
+images/cat.png
+
+If you don’t have them yet, you can temporarily remove these two lines:
