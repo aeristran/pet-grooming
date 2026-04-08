@@ -174,7 +174,7 @@ mysqli_close($link);
         <p>Welcome, <?php echo htmlspecialchars($_SESSION["username"]); ?></p>
 
         <div class="w3-margin-bottom">
-            <a href="set_availability.php" class="w3-button w3-purple">Set Availability</a>
+           
             <a href="set_specific_availability.php" class="w3-button w3-indigo">Set Specific Dates</a>
         </div>
 
