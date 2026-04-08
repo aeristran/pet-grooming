@@ -225,7 +225,7 @@ $last_username = isset($_COOKIE["last_username"]) ? $_COOKIE["last_username"] : 
     <div class="paw paw4">🐾</div>
 
     <img src="dog.png" alt="Dog" class="pet-side pet-left">
-    <img src="images/cat.png" alt="Cat" class="pet-side pet-right">
+    <img src="cat.png" alt="Cat" class="pet-side pet-right">
 
     <div class="login-card">
         <h2>Pet Grooming Login</h2>
