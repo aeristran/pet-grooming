@@ -80,6 +80,10 @@ mysqli_close($link);
             color: white;
             padding: 30px;
         }
+        .accepted {
+        background: #d1ecf1;
+        color: #0c5460;
+        }
 
         .header h1 {
             margin: 0;
@@ -167,23 +171,23 @@ mysqli_close($link);
                             <td>$<?php echo htmlspecialchars(number_format((float)$appt["total_price"], 2)); ?></td>
                            <td>
     <?php
-    $status = strtoupper(trim($appt["status"]));
-    $status_class = "default-status";
-    $status_label = "PENDING";
+        $status = strtoupper(trim($appt["status"]));
+        $status_class = "default-status";
+        $status_label = $status;
 
-    if ($status == "SCHEDULED") {
-        $status_class = "scheduled";
-        $status_label = "PENDING";
-    } elseif ($status == "ACCEPTED") {
-        $status_class = "accepted";
-        $status_label = "ACCEPTED";
-    } elseif ($status == "COMPLETED") {
-        $status_class = "completed";
-        $status_label = "COMPLETED";
-    } elseif ($status == "CANCELLED") {
-        $status_class = "cancelled";
-        $status_label = "CANCELLED";
-    }
+        if ($status == "SCHEDULED") {
+            $status_class = "scheduled";
+            $status_label = "PENDING";
+        } elseif ($status == "ACCEPTED") {
+            $status_class = "accepted";
+            $status_label = "ACCEPTED";
+        } elseif ($status == "COMPLETED") {
+            $status_class = "completed";
+            $status_label = "COMPLETED";
+        } elseif ($status == "CANCELLED") {
+            $status_class = "cancelled";
+            $status_label = "CANCELLED";
+        }
     ?>
     <span class="status-badge <?php echo $status_class; ?>">
         <?php echo htmlspecialchars($status_label); ?>

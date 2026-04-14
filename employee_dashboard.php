@@ -80,7 +80,7 @@ FROM appointments a
 JOIN pets p ON a.pet_id = p.pet_id
 JOIN users u ON a.customer_id = u.user_id
 WHERE a.employee_id = ?
-AND UPPER(TRIM(a.status)) IN ('SCHEDULED', 'ACCEPTED')
+AND UPPER(TRIM(a.status)) IN ('SCHEDULED', 'ACCEPTED', 'COMPLETED')
 ORDER BY a.appointment_date DESC, a.start_time DESC
 ";
 
