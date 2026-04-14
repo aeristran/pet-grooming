@@ -144,9 +144,9 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || $_SESSION
             <div class="section-title">Quick Actions</div>
 
             <div class="card-grid">
-                <a href="addEmployee.php" class="action-card">
-                    <h3>Create Employee</h3>
-                    <p>Add a new employee account for your pet grooming system.</p>
+                <a href="manage_employee.php" class="action-card">
+                    <h3>Manage Employees</h3>
+                    <p>View and manage existing employee accounts.</p>
                 </a>
 
                 <a href="manage_services.php" class="action-card">
