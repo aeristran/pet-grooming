@@ -104,9 +104,3 @@ This project was developed using Agile Kanban practices.
 - **Project Management:** Kanban (Trello-style)
 
 ---
-
-## ⚙️ Installation & Setup
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-repo/pawperfect.git
